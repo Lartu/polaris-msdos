@@ -46,6 +46,9 @@ language that have yet to be implemented. This is a roadmap of them in no partic
 - [ ] Documentation
 - [ ] Functions for easy reading and modifying of Polaris variables from C code.
 - [ ] Including other source files
+- [ ] Sockets
+- [ ] Pauses
+- [ ] Requests
 
 ## Contributing to Polaris
 
