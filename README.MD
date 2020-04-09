@@ -44,7 +44,7 @@ language that have yet to be implemented. This is a roadmap of them in no partic
 - [ ] Random Number Generation
 - [ ] Sub-strings
 - [ ] Documentation
-- [ ] Functions for reading and modifying Polaris variables from C code.
+- [ ] Functions for easy reading and modifying of Polaris variables from C code.
 - [ ] Including other source files
 
 ## Contributing to Polaris
