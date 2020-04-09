@@ -14,7 +14,7 @@ conceived to run under **MS-DOS** and **Unix** systems, and it consists entirely
 The whole interpreter size is under **32 KiB** and can also be used as an **embeddable language** in
 any C or C++ project.
 
-```php
+```javascript
 /* Polaris Hello World */
 (
   "Hello, " @name join print
