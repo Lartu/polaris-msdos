@@ -27,7 +27,7 @@ sayHi%
 ## How to Build Polaris
 
 - If you are on a **Unix** system, clone this repository and then run `cc polaris.c -lm -ansi -pedantic -Wall -o polaris`.
-- If you are on a **MS-DOS** system, get [Turbo C](https://edn.embarcadero.com/article/20841). Then from Turbo C open `polaris.c` and then go to Compile 🡒 Make EXE file. If you get an error stating that the project consists of only one line change all line breaks in polaris.c (\n) to carriage returns + line breaks (\r\n).
+- If you are on a **MS-DOS** system, get [Turbo C](https://edn.embarcadero.com/article/20841). Then from Turbo C open `polaris.c` and then go to Compile 🡒 Make EXE file. If you get an error stating that the project consists of only one line, change all line breaks in polaris.c (`\n`) to carriage returns + line breaks (`\r\n`).
 - If you want to **embed** Polaris into your own project, include the Polaris source code and then call `eval(<source>);`,
 where `<source>` is a C string containing a Polaris script.
 
