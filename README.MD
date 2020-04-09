@@ -1,11 +1,11 @@
 <p align="center">
   <img src="https://github.com/Lartu/polaris/blob/master/IMG/LOGO.PNG">
   <br><br>
-  <img src="https://img.shields.io/badge/version-1.0α-blue.svg?style=flat-square">
-  <img src="https://img.shields.io/badge/apache-_2.0-yellow?style=flat-square">
-  <a href="https://www.freenode.net"><img src="https://img.shields.io/badge/irc-%23polarislang-navy?style=flat-square"></a>
-  <a href="https://t.me/polarislang"><img src="https://img.shields.io/badge/polarislang-9cf?style=flat-square&logo=telegram"></a>
-  <a href="https://travis-ci.org/Lartu/ldpl"><img src="https://img.shields.io/travis/Lartu/ldpl/master?style=flat-square"></a>
+  <img src="https://img.shields.io/badge/version-1.0α-blue.svg">
+  <img src="https://img.shields.io/badge/apache-_2.0-yellow">
+  <a href="https://www.freenode.net"><img src="https://img.shields.io/badge/irc-%23polarislang-navy"></a>
+  <a href="https://t.me/polarislang"><img src="https://img.shields.io/badge/-polarislang-295887?logo=telegram"></a>
+  <a href="https://travis-ci.org/Lartu/ldpl"><img src="https://img.shields.io/travis/Lartu/ldpl/master"></a>
 </p>
 
 **Polaris** is a stack-based, interpreted programming language with strings as its only data type.
