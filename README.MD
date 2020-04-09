@@ -42,13 +42,12 @@ language that have yet to be implemented. This is a roadmap of them in no partic
 - [ ] File Reading / Writing
 - [ ] Random Number Generation
 - [ ] Sub-strings
-- [ ] Documentation
+- [x] Documentation
 - [ ] Functions for easy reading and modifying of Polaris variables from C code.
 - [ ] Including other source files
 - [ ] Sockets
 - [ ] Pauses
-- [ ] Escape double quotes in strings
-- [ ] Parentheses should be able to exist within quoted strings in block strings
+- [x] Escape double quotes in strings
 
 ## Contributing to Polaris
 
