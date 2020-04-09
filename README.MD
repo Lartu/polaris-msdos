@@ -5,13 +5,13 @@
   <img src="https://img.shields.io/badge/apache-_2.0-yellow">
   <a href="https://www.freenode.net"><img src="https://img.shields.io/badge/irc-%23polarislang-navy"></a>
   <a href="https://t.me/polarislang"><img src="https://img.shields.io/badge/-polarislang-295887?logo=telegram"></a>
-  <a href="https://travis-ci.org/Lartu/ldpl"><img src="https://img.shields.io/travis/Lartu/ldpl/master"></a>
+  <!--<a href="https://travis-ci.org/Lartu/ldpl"><img src="https://img.shields.io/travis/Lartu/ldpl/master"></a>-->
 </p>
 
 **Polaris** is a stack-based, interpreted programming language with strings as its only data type.
 It has been designed to be **small** in size and **minimal** in language features. **Polaris** was
 conceived to run under **MS-DOS** and **Unix** systems, and it consists entirely of a single **.c** file.
-The whole interpreter size is under **40 KiB** and can also be used as an **embeddable language** in
+The whole interpreter size is under **32 KiB** and can also be used as an **embeddable language** in
 any C or C++ project.
 
 ## How to Build Polaris
