@@ -16,9 +16,8 @@ any C or C++ project.
 
 ```javascript
 /* Polaris Hello World */
-(
-  "Hello, " @name join print
-) >sayHi
+("Hello, " @name join print)
+>sayHi
 
 "What's your name?: " print
 input >name
