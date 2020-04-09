@@ -48,7 +48,6 @@ language that have yet to be implemented. This is a roadmap of them in no partic
 - [ ] Including other source files
 - [ ] Sockets
 - [ ] Pauses
-- [ ] Requests
 
 ## Contributing to Polaris
 
