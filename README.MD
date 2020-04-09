@@ -11,7 +11,7 @@
 **Polaris** is a stack-based, interpreted programming language with strings as its only data type.
 It has been designed to be **small** in size and **minimal** in language features. **Polaris** was
 conceived to run under **MS-DOS** and **Unix** systems, and it consists entirely of a single **.c** file.
-The whole interpreter size is under **32 KiB** and can also be used as an **embeddable language** in
+The whole interpreter size is under **32 KiB** and it can also be used as an **embeddable language** in
 any C or C++ project.
 
 ```javascript
