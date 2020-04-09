@@ -14,6 +14,16 @@ conceived to run under **MS-DOS** and **Unix** systems, and it consists entirely
 The whole interpreter size is under **32 KiB** and can also be used as an **embeddable language** in
 any C or C++ project.
 
+```php
+(
+  "Hello, " @name join print
+) >sayHi
+
+"What's your name?: " print
+input >name
+sayHi%
+```
+
 ## How to Build Polaris
 
 - If you are on a **Unix** system, clone this repository and then run `cc POLARIS.C -lm -o polaris`.
