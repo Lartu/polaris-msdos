@@ -3,7 +3,7 @@
   <br><br>
   <img src="https://img.shields.io/badge/version-1.0α-blue.svg?style=flat-square">
   <img src="https://img.shields.io/badge/apache-_2.0-yellow?style=flat-square">
-  <a href="https://www.freenode.net"><img src="https://img.shields.io/badge/irc-%23polaris-navy?style=flat-square"></a>
+  <a href="https://www.freenode.net"><img src="https://img.shields.io/badge/irc-%23polarislang-navy?style=flat-square"></a>
   <a href="https://travis-ci.org/Lartu/ldpl"><img src="https://img.shields.io/travis/Lartu/ldpl/master?style=flat-square"></a>
 </p>
 
