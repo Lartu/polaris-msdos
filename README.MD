@@ -48,6 +48,7 @@ language that have yet to be implemented. This is a roadmap of them in no partic
 - [ ] Sockets
 - [ ] Pauses
 - [ ] Escape double quotes in strings
+- [ ] Parentheses should be able to exist within quoted strings in block strings
 
 ## Contributing to Polaris
 
