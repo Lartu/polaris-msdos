@@ -138,7 +138,7 @@ void display_help()
     puts("Complete documentation for Polaris should be found on this");
     puts("system using the 'man polaris' command. If you have access");
     puts("to the internet, the documentation can also be found online");
-    puts("at polaris.lartu.net.");
+    puts("at www.lartu.net/projects/polaris.");
     #elif OS_TYPE == 2
     puts("  \\v              Display Polaris version information.");
     puts("  \\h              Display this help.");
@@ -147,7 +147,7 @@ void display_help()
     puts("Complete documentation for Polaris should be found under");
     puts("the Polaris directory on this system. If you have access");
     puts("to the internet, the documentation can also be found online");
-    puts("at polaris.lartu.net.");
+    puts("at www.lartu.net/projects/polaris.");
     #endif
     exit(0);
 }
@@ -226,6 +226,10 @@ void eval(char* source)
             in_comment = false;
             ++i;
             token_start = i + 1;
+        }
+        else if(current_char == '\\' && next_char == '"')
+        {
+            ++i;
         }
         else if(!in_comment && !in_quoted && current_char == '(')
         {
@@ -337,6 +341,27 @@ void eval_reserved_word(char* source, size_t token_start, size_t token_end){
                 ++i;
             }else if(source[i] == '\\' && i < val_len && source[i+1] == 'r'){
                 printf("\r");
+                ++i;
+            }else if(source[i] == '\\' && i < val_len && source[i+1] == 't'){
+                printf("\t");
+                ++i;
+            }else if(source[i] == '\\' && i < val_len && source[i+1] == 'b'){
+                printf("\b");
+                ++i;
+            }else if(source[i] == '\\' && i < val_len && source[i+1] == 'a'){
+                printf("\a");
+                ++i;
+            }else if(source[i] == '\\' && i < val_len && source[i+1] == 'v'){
+                printf("\v");
+                ++i;
+            }else if(source[i] == '\\' && i < val_len && source[i+1] == 'f'){
+                printf("\f");
+                ++i;
+            }else if(source[i] == '\\' && i < val_len && source[i+1] == '\\'){
+                printf("\\");
+                ++i;
+            }else if(source[i] == '\\' && i < val_len && source[i+1] == '"'){
+                printf("\"");
                 ++i;
             }else{
                 printf("%c", source[i]);
