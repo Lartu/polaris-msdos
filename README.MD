@@ -28,6 +28,7 @@ sayHi%
 
 - If you are on a **Unix** system, clone this repository and then run `cc polaris.c -lm -ansi -pedantic -Wall -o polaris`.
 - If you are on a **MS-DOS** system, get [Turbo C](https://edn.embarcadero.com/article/20841). Then from Turbo C open `polaris.c`, change the line `#define OS_TYPE 1` to `#define OS_TYPE 2` and then go to Compile 🡒 Make EXE file. If you get an error stating that the project consists of only one line, change all line breaks in polaris.c (`\n`) to carriage returns + line breaks (`\r\n`).
+- If you are on any **other OS**, get your favourite C compiler and build `polaris.c`. Just like that. Polaris is written in strict ANSI C and it should run on any OS that has a C compiler.
 - If you want to **embed** Polaris into your own project, include the Polaris source code and then call `eval(<source>);`,
 where `<source>` is a C string containing a Polaris script.
 
