@@ -33,7 +33,7 @@ where `<source>` is a C string containing a Polaris script.
 
 ## Documentation
 
-The Polaris documentation has not yet been written but it **will** be written and uploaded (hopefully) tomorrow.
+The Polaris documentation can be found at www.lartu.net/projects/polaris.
 
 ## Roadmap
 
