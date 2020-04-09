@@ -16,9 +16,8 @@ any C or C++ project.
 
 ```javascript
 /* Polaris Hello World */
-(
-  "Hello, " @name join print
-) >sayHi
+("Hello, " @name join print)
+>sayHi
 
 "What's your name?: " print
 input >name
@@ -34,7 +33,7 @@ where `<source>` is a C string containing a Polaris script.
 
 ## Documentation
 
-The Polaris documentation has not yet been written but it **will** be written and uploaded (hopefully) tomorrow.
+The Polaris documentation can be found at www.lartu.net/projects/polaris.
 
 ## Roadmap
 
@@ -43,9 +42,12 @@ language that have yet to be implemented. This is a roadmap of them in no partic
 - [ ] File Reading / Writing
 - [ ] Random Number Generation
 - [ ] Sub-strings
-- [ ] Documentation
-- [ ] Functions for reading and modifying Polaris variables from C code.
+- [x] Documentation
+- [ ] Functions for easy reading and modifying of Polaris variables from C code.
 - [ ] Including other source files
+- [ ] Sockets
+- [ ] Pauses
+- [x] Escape double quotes in strings
 
 ## Contributing to Polaris
 
