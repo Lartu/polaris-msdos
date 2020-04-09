@@ -1,0 +1,31 @@
+/*
+Title: 99 Bottles of Beer
+Author: Martín del Río
+Description:
+This script implements 99 Bottle of Beer
+(https://esolangs.org/wiki/99_bottles_of_beer)
+in Polaris.
+*/
+
+(
+    (@bottles 1 !=) (s) ("") if
+) >plural
+
+99 >bottles
+(@bottles 0 >) (
+    @bottles " bottle" join plural% join
+    " of beer on the wall,\n" join print
+    @bottles " bottle" join plural% join
+    " of beer.\n" join print
+    "Take one down, pass it around,\n" print
+    @bottles 1 - >bottles
+    (@bottles 0 >)
+    (
+        @bottles " bottle" join plural% join
+        " of beer on the wall,\n\n" join
+    )
+    (
+        "No bottles of beer on the wall.\n\n"
+    ) if
+    print
+) while

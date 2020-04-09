@@ -27,7 +27,7 @@ sayHi%
 
 ## How to Build Polaris
 
-- If you are on a **Unix** system, clone this repository and then run `cc POLARIS.C -lm -o polaris`.
+- If you are on a **Unix** system, clone this repository and then run `cc polaris.c -lm -o polaris`.
 - **MS-DOS** instructions will be uploaded in the near future.
 - If you want to **embed** Polaris into your own project, include the Polaris source code and then call `eval(<source>);`,
 where `<source>` is a C string containing a Polaris script.

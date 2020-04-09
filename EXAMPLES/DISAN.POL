@@ -1,0 +1,22 @@
+/*
+Title: Disan Count in Polaris
+Author: Martín del Río
+Description:
+This script implements a Disan Count
+(https://esolangs.org/wiki/Disan_Count)
+in Polaris. It asks the user to enter a
+number and it then iterates from that
+number printing all even numbers.
+*/
+
+"Enter a number: " print
+input >n
+
+(@n 0 >=) (
+    (@n 2 % 0 =) (
+        @n " is even!\n" join print
+    ) () if
+    @n 1 - >n
+) while
+
+"Done!\n" print
