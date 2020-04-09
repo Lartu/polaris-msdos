@@ -15,6 +15,7 @@ The whole interpreter size is under **32 KiB** and can also be used as an **embe
 any C or C++ project.
 
 ```php
+/* Polaris Hello World */
 (
   "Hello, " @name join print
 ) >sayHi
