@@ -49,7 +49,7 @@ language that have yet to be implemented. This is a roadmap of them in no partic
 - [ ] Sockets
 - [ ] Pauses
 - [x] Escape double quotes in strings
-- [ ] Flip MS-DOS Switches
+- [X] Flip MS-DOS Switches
 
 ## Contributing to Polaris
 
