@@ -50,6 +50,7 @@ language that have yet to be implemented. This is a roadmap of them in no partic
 - [ ] Pauses
 - [x] Escape double quotes in strings
 - [X] Flip MS-DOS Switches
+- [ ] Error message when no file is specified
 
 ## Contributing to Polaris
 
