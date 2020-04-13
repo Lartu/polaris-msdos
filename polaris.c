@@ -3,6 +3,7 @@
 #include "stdlib.h"
 #include "string.h"
 #include "math.h"
+#include "time.h"
 
 
 /* --- Types --- */
@@ -35,6 +36,7 @@ struct var_element {
 #endif
 #define MAXLINELENGTH 255   /* Maximum length of a line (all characters after 255 are not loaded) */
 #define MAXINPUTLENGTH 1024 /* Maximum length of user input */
+#define EPSILON 0.000001
 
 
 /* --- Global Variables --- */
@@ -58,18 +60,20 @@ void print_substr(char* source, size_t from, size_t to, bool trim);
 bool comp_substr(char* source, size_t from, size_t to, char* compare_to);
 void copy_substr(char* destination, char* origin, size_t from, size_t to);
 void stack_push(char* value, size_t from, size_t to, bool trim, bool pushempty);
-void eval_reserved_word(char* source, size_t token_start, size_t token_end);
+int eval_reserved_word(char* source, size_t token_start, size_t token_end);
 stack_element * stack_pop();
 void delete_element(stack_element * se);
 void num_to_str(char* destination, pnumber number);
 void set_var_value(char* var, char* value);
 void get_var_value(char* var);
+void polaris_setup();
 
 
 /* --- Main --- */
 int main(int argc, char** argv){
     check_args(argc, argv);
     load_source_file(filename);
+    polaris_setup();
     eval(file_contents);
     free(file_contents);
     return 0;
@@ -77,6 +81,10 @@ int main(int argc, char** argv){
 
 
 /* --- Functions --- */
+void polaris_setup(){
+    srand(time(null) * clock());
+}
+
 void check_args(int argc, char** argv){
     if(argc > 1) {
         unsigned int i;
@@ -271,7 +279,9 @@ void eval(char* source)
             token_end = i;
             if(token_start < token_end){
                 /* Acá evalúo el token */
-                eval_reserved_word(source, token_start, token_end);
+                if(eval_reserved_word(source, token_start, token_end) != 0){
+                    return;
+                }
             }
             token_start = i;
         }
@@ -317,7 +327,7 @@ bool str_is_num(char* source, size_t from, size_t to){
     return true;
 }
 
-void eval_reserved_word(char* source, size_t token_start, size_t token_end){
+int eval_reserved_word(char* source, size_t token_start, size_t token_end){
     /* Find real start (trim) */
     size_t i;
     for(i = token_start; i < token_end; ++i){
@@ -500,6 +510,66 @@ void eval_reserved_word(char* source, size_t token_start, size_t token_end){
         delete_element(value1);
         stack_push(result_s, 0, 50, true, false);
     }
+    /* sin */
+    else if(comp_substr(source, token_start, token_end, "sin")){
+        stack_element * value1 = stack_pop();
+        pnumber result;
+        char result_s[50];
+        if(
+            !str_is_num((*value1).value, 0, strlen((*value1).value))
+        ){
+            error("trying to operate arithmetically with a non-numerical value.");
+        }
+        result = sin(atof((*value1).value));
+        num_to_str(result_s, result);
+        delete_element(value1);
+        stack_push(result_s, 0, 50, true, false);
+    }
+    /* cos */
+    else if(comp_substr(source, token_start, token_end, "cos")){
+        stack_element * value1 = stack_pop();
+        pnumber result;
+        char result_s[50];
+        if(
+            !str_is_num((*value1).value, 0, strlen((*value1).value))
+        ){
+            error("trying to operate arithmetically with a non-numerical value.");
+        }
+        result = cos(atof((*value1).value));
+        num_to_str(result_s, result);
+        delete_element(value1);
+        stack_push(result_s, 0, 50, true, false);
+    }
+    /* tan */
+    else if(comp_substr(source, token_start, token_end, "tan")){
+        stack_element * value1 = stack_pop();
+        pnumber result;
+        char result_s[50];
+        if(
+            !str_is_num((*value1).value, 0, strlen((*value1).value))
+        ){
+            error("trying to operate arithmetically with a non-numerical value.");
+        }
+        result = tan(atof((*value1).value));
+        num_to_str(result_s, result);
+        delete_element(value1);
+        stack_push(result_s, 0, 50, true, false);
+    }
+    /* log */
+    else if(comp_substr(source, token_start, token_end, "log")){
+        stack_element * value1 = stack_pop();
+        pnumber result;
+        char result_s[50];
+        if(
+            !str_is_num((*value1).value, 0, strlen((*value1).value))
+        ){
+            error("trying to operate arithmetically with a non-numerical value.");
+        }
+        result = log(atof((*value1).value));
+        num_to_str(result_s, result);
+        delete_element(value1);
+        stack_push(result_s, 0, 50, true, false);
+    }
     /* = */
     else if(comp_substr(source, token_start, token_end, "=")){
         stack_element * value2 = stack_pop();
@@ -510,7 +580,7 @@ void eval_reserved_word(char* source, size_t token_start, size_t token_end){
         ){
             pnumber val1 = atof((*value1).value);
             pnumber val2 = atof((*value2).value);
-            stack_push(val1 == val2 ? "1" : "0", 0, 50, true, false);
+            stack_push(fabs(val1 - val2) < EPSILON ? "1" : "0", 0, 50, true, false);
         }else{
             if(strcmp((*value1).value, (*value2).value) == 0){
                 stack_push("1", 0, 50, true, false);
@@ -531,7 +601,7 @@ void eval_reserved_word(char* source, size_t token_start, size_t token_end){
         ){
             pnumber val1 = atof((*value1).value);
             pnumber val2 = atof((*value2).value);
-            stack_push(val1 != val2 ? "1" : "0", 0, 50, true, false);
+            stack_push(fabs(val1 - val2) > EPSILON ? "1" : "0", 0, 50, true, false);
         }else{
             if(strcmp((*value1).value, (*value2).value) != 0){
                 stack_push("1", 0, 50, true, false);
@@ -774,7 +844,7 @@ void eval_reserved_word(char* source, size_t token_start, size_t token_end){
         get_var_value(var_name);
         free(var_name);
     }
-    /* function% */
+    /* % */
     else if(comp_substr(source, token_end-1, token_end, "%")){
         stack_element * value;
         char * var_name = malloc((token_end - token_start) * sizeof(char));
@@ -784,6 +854,16 @@ void eval_reserved_word(char* source, size_t token_start, size_t token_end){
         value = stack_pop();
         eval((*value).value);
         delete_element(value);
+    }
+    /* random */
+    else if(comp_substr(source, token_start, token_end, "random")){
+        char result_s[50];
+        num_to_str(result_s, ((double) rand() / (RAND_MAX)));
+        stack_push(result_s, 0, 50, true, false);
+    }
+    /* exit */
+    else if(comp_substr(source, token_start, token_end, "exit")){
+        return 1;
     }
     /* Number */
     else if(str_is_num(source, token_start, token_end)){
@@ -796,6 +876,7 @@ void eval_reserved_word(char* source, size_t token_start, size_t token_end){
     else{
         stack_push(source, token_start, token_end, true, false);
     }
+    return 0;
 }
 
 void set_var_value(char* var, char* value){

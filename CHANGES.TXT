@@ -1,0 +1,12 @@
+POLARIS 1.1 ALPHA:
+DATE: April 13, 2020
+ - sin command (sine function)
+ - cos command (cosine function)
+ - tan funcion (tangent function)
+ - log funcion (napierian / natural logarithm)
+ - random command
+ - exit command
+
+POLARIS 1.0 ALPHA:
+DATE: April 9, 2020
+ - Initial release
