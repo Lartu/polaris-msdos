@@ -11,7 +11,7 @@
 **Polaris** is a stack-based, interpreted programming language with strings as its only data type.
 It has been designed to be **small** in size and **minimal** in language features. **Polaris** was
 conceived to run under **MS-DOS** and **Unix** systems, and it consists entirely of a single **.c** file.
-The whole interpreter size is under **32 KiB** and can also be used as an **embeddable language** in
+The whole interpreter size is under **32 KiB** and it can also be used as an **embeddable language** in
 any C or C++ project.
 
 ```javascript
@@ -27,7 +27,8 @@ sayHi%
 ## How to Build Polaris
 
 - If you are on a **Unix** system, clone this repository and then run `cc polaris.c -lm -ansi -pedantic -Wall -o polaris`.
-- If you are on a **MS-DOS** system, get [Turbo C](https://edn.embarcadero.com/article/20841). Then from Turbo C open `polaris.c` and then go to Compile 🡒 Make EXE file.
+- If you are on a **MS-DOS** system, get [Turbo C](https://edn.embarcadero.com/article/20841). Then from Turbo C open `polaris.c`, change the line `#define OS_TYPE 1` to `#define OS_TYPE 2` and then go to Compile 🡒 Make EXE file. If you get an error stating that the project consists of only one line, change all line breaks in polaris.c (`\n`) to carriage returns + line breaks (`\r\n`).
+- If you are on any **other OS**, get your favourite C compiler and build `polaris.c`. Just like that. Polaris is written in strict ANSI C and it should run on any OS that has a C compiler.
 - If you want to **embed** Polaris into your own project, include the Polaris source code and then call `eval(<source>);`,
 where `<source>` is a C string containing a Polaris script.
 
@@ -48,7 +49,8 @@ language that have yet to be implemented. This is a roadmap of them in no partic
 - [ ] Sockets
 - [ ] Pauses
 - [x] Escape double quotes in strings
-- [ ] Flip MS-DOS Switches
+- [X] Flip MS-DOS Switches
+- [ ] Error message when no file is specified
 
 ## Contributing to Polaris
 
