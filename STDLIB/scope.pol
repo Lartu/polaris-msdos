@@ -1,0 +1,24 @@
+0 >__$scopecount
+
+( /* "addsc": Adds a local scope */
+    @__$scopecount 1 + >__$scopecount
+) >addsc
+
+( /* "delsc": Deletes a local scope*/
+    (@__$scopecount 0 >)
+        (@__$scopecount 1 - >__$scopecount)
+        ("No scopes left to delete when calling delsc." pliberror%)
+        if
+) >delsc
+
+( /* "lset": Saves a local variable */
+    /* Par 1: value */
+    /* Par 2: var name (top)*/
+    "__$localvar" @__$scopecount join join set
+) >lset
+
+( /* "lget": Gets a local variable */
+    /* Par 1: value */
+    /* Par 2: var name (top)*/
+    "__$localvar" @__$scopecount join join get
+) >lget

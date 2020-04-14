@@ -1,4 +1,25 @@
+/* --- Constants --- */
+#define OS_TYPE 1 /* 1 - Unix, 2 - MS-DOS, 3 - Windows*/
+#define VERSION "1.0"
+#if OS_TYPE == 1
+    #define OS "Unix"
+#elif OS_TYPE == 2
+    #define OS "MS-DOS"
+#elif OS_TYPE == 3
+    #define OS "Windows"
+#endif
+#define MAXLINELENGTH 255   /* Maximum length of a line (all characters after 255 are not loaded) */
+#define MAXINPUTLENGTH 1024 /* Maximum length of user input */
+#define EPSILON 0.000001
+
+
 /* --- Includes --- */
+#if OS_TYPE == 1
+    #define _POSIX_C_SOURCE 200112L
+    #include "unistd.h"
+#elif OS_TYPE == 3
+    #include "windows.h"
+#endif
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
@@ -26,22 +47,8 @@ struct var_element {
 };
 
 
-/* --- Constants --- */
-#define OS_TYPE 1 /* 1 - Unix, 2 - MS-DOS */
-#define VERSION "1.0"
-#if OS_TYPE == 1
-    #define OS "Unix"
-#elif OS_TYPE == 2
-    #define OS "MS-DOS"
-#endif
-#define MAXLINELENGTH 255   /* Maximum length of a line (all characters after 255 are not loaded) */
-#define MAXINPUTLENGTH 1024 /* Maximum length of user input */
-#define EPSILON 0.000001
-
-
 /* --- Global Variables --- */
 char filename[255];
-char * file_contents = null;
 bool display_memory_information = false;
 stack_element * stack = null;
 var_element * variables = null;
@@ -52,30 +59,32 @@ bool show_pushpops = false;
 void check_args(int argc, char** argv);
 void display_version();
 void display_help();
-void load_source_file(char* path);
+char * load_source_file(char* path);
 void error(char* message);
 void warning(char* message);
-void eval(char* source);
+void eval(char* source, char* base_path);
 void print_substr(char* source, size_t from, size_t to, bool trim);
 bool comp_substr(char* source, size_t from, size_t to, char* compare_to);
 void copy_substr(char* destination, char* origin, size_t from, size_t to);
 void stack_push(char* value, size_t from, size_t to, bool trim, bool pushempty);
-int eval_reserved_word(char* source, size_t token_start, size_t token_end);
+int eval_reserved_word(char* source, size_t token_start, size_t token_end, char* base_path);
 stack_element * stack_pop();
 void delete_element(stack_element * se);
 void num_to_str(char* destination, pnumber number);
 void set_var_value(char* var, char* value);
 void get_var_value(char* var);
 void polaris_setup();
+void delay(int milliseconds);
 
 
 /* --- Main --- */
 int main(int argc, char** argv){
+    char * file_contents = null;
     check_args(argc, argv);
-    load_source_file(filename);
     polaris_setup();
-    eval(file_contents);
-    free(file_contents);
+    file_contents = load_source_file(filename);
+    eval(file_contents, ".");
+    if(file_contents != null) free(file_contents);
     return 0;
 }
 
@@ -86,6 +95,7 @@ void polaris_setup(){
 }
 
 void check_args(int argc, char** argv){
+    strcpy(filename, "");
     if(argc > 1) {
         unsigned int i;
         for(i = 1; i < argc; ++i){
@@ -102,7 +112,7 @@ void check_args(int argc, char** argv){
             else if(strcmp(argv[i], "-p") == 0){
                 show_pushpops = true;
             }
-            #elif OS_TYPE == 2
+            #elif OS_TYPE == 2 || OS_TYPE == 3
             if(strcmp(argv[i], "\\v") == 0){
                 display_version();
             }
@@ -124,6 +134,9 @@ void check_args(int argc, char** argv){
                 return;
             }
         }
+    }
+    if(strcmp(filename, "") == 0){
+        error("\r\nUsage: polaris <file>\r\nRun polaris -h for more information");
     }
 }
 
@@ -148,7 +161,7 @@ void display_help()
     puts("system using the 'man polaris' command. If you have access");
     puts("to the internet, the documentation can also be found online");
     puts("at www.lartu.net/projects/polaris.");
-    #elif OS_TYPE == 2
+    #elif OS_TYPE == 2 || OS_TYPE == 3
     puts("  /v              Display Polaris version information.");
     puts("  /h              Display this help.");
     puts("  /m              Display memory information.");
@@ -161,12 +174,17 @@ void display_help()
     exit(0);
 }
 
-void load_source_file(char* path)
+char * load_source_file(char* path)
 {
+    char * file_contents = null;
     FILE* file_pointer;
     int bufferLength = MAXLINELENGTH;
     char buffer[MAXLINELENGTH];
     size_t file_length = 0;
+     if(display_memory_information)
+    {
+        printf("Loading file %s...\r\n", path);
+    }
     file_pointer = fopen(path, "r");
     if(file_pointer)
     {
@@ -193,17 +211,19 @@ void load_source_file(char* path)
             printf("%lu bytes read from source file.\r\n", (unsigned long)bytes_read);
         }
         fclose(file_pointer);
+        return file_contents;
     }
     else
     {
         error("couldn't load the requested file.");
     }
+    return null;
 }
 
 void error(char* message)
 {
     printf("Polaris error: %s\r\n", message);
-    if(file_contents != null) free(file_contents);
+    /*if(file_contents != null) free(file_contents);*/
     exit(1);
 }
 
@@ -212,7 +232,7 @@ void warning(char* message)
     printf("Polaris warning: %s\r\n", message);
 }
 
-void eval(char* source)
+void eval(char* source, char* base_path)
 {
     size_t token_start = 0;
     size_t token_end;
@@ -279,7 +299,7 @@ void eval(char* source)
             token_end = i;
             if(token_start < token_end){
                 /* Acá evalúo el token */
-                if(eval_reserved_word(source, token_start, token_end) != 0){
+                if(eval_reserved_word(source, token_start, token_end, base_path) != 0){
                     return;
                 }
             }
@@ -327,7 +347,7 @@ bool str_is_num(char* source, size_t from, size_t to){
     return true;
 }
 
-int eval_reserved_word(char* source, size_t token_start, size_t token_end){
+int eval_reserved_word(char* source, size_t token_start, size_t token_end, char* base_path){
     /* Find real start (trim) */
     size_t i;
     for(i = token_start; i < token_end; ++i){
@@ -382,9 +402,12 @@ int eval_reserved_word(char* source, size_t token_start, size_t token_end){
                 printf("%c", source[i]);
             }
         }
+        #if OS_TYPE == 1
+            fflush(stdout);
+        #endif
         delete_element(value);
     }
-    /* +  */
+    /* + */
     else if(comp_substr(source, token_start, token_end, "+")){
         stack_element * value2 = stack_pop();
         stack_element * value1 = stack_pop();
@@ -733,7 +756,7 @@ int eval_reserved_word(char* source, size_t token_start, size_t token_end){
     /* eval */
     else if(comp_substr(source, token_start, token_end, "eval")){
         stack_element * value = stack_pop();
-        eval((*value).value);
+        eval((*value).value, base_path);
         delete_element(value);
     }
     /* set */
@@ -756,12 +779,12 @@ int eval_reserved_word(char* source, size_t token_start, size_t token_end){
         stack_element * if_block = stack_pop();
         stack_element * condition_block = stack_pop();
         stack_element * result;
-        eval((*condition_block).value);
+        eval((*condition_block).value, base_path);
         result = stack_pop();
         if(strcmp((*result).value, "0") != 0){
-            eval((*if_block).value);
+            eval((*if_block).value, base_path);
         }else{
-            eval((*else_block).value);
+            eval((*else_block).value, base_path);
         }
         delete_element(else_block);
         delete_element(if_block);
@@ -774,11 +797,11 @@ int eval_reserved_word(char* source, size_t token_start, size_t token_end){
         stack_element * condition_block = stack_pop();
         while(true){
             stack_element * result;
-            eval((*condition_block).value);
+            eval((*condition_block).value, base_path);
             result = stack_pop();
             if(strcmp((*result).value, "0") != 0){
                 delete_element(result);
-                eval((*while_block).value);
+                eval((*while_block).value, base_path);
             }else{
                 delete_element(result);
                 break;
@@ -852,7 +875,7 @@ int eval_reserved_word(char* source, size_t token_start, size_t token_end){
         get_var_value(var_name);
         free(var_name);
         value = stack_pop();
-        eval((*value).value);
+        eval((*value).value, base_path);
         delete_element(value);
     }
     /* random */
@@ -864,6 +887,60 @@ int eval_reserved_word(char* source, size_t token_start, size_t token_end){
     /* exit */
     else if(comp_substr(source, token_start, token_end, "exit")){
         return 1;
+    }
+    /* import */
+    else if(comp_substr(source, token_start, token_end, "import")){
+        int i = 0;
+        stack_element * value = stack_pop();
+        char new_path[512];
+        char * file_contents;
+        if(strlen((*value).value) == 0){
+            error("Invalid route for import (empty string).");
+        }
+        #if OS_TYPE == 1
+            if((*value).value[0] == '/'){
+                /*Absolute Paths*/
+                strcpy(new_path, (*value).value);
+                strcat(new_path, "\0");
+            }else{
+                /* Relative Paths */
+                strcpy(new_path, base_path);
+                strcat(new_path, "/");
+                strcat(new_path, (*value).value);
+            }
+        #elif OS_TYPE == 2 || OS_TYPE == 3
+            if(strlen((*value).value) > 1 && (*value).value[1] == ':'){
+                /*Absolute Paths*/
+                strcpy(new_path, (*value).value);
+                strcat(new_path, "\0");
+            }else{
+                /* Relative Paths */
+                strcpy(new_path, base_path);
+                strcat(new_path, "/");
+                strcat(new_path, (*value).value);
+            }
+        #endif
+        file_contents = load_source_file(new_path);
+        for(i = strlen(new_path) - 1; i > 0; i--){
+            if(new_path[i] == '/' || new_path[i] == '\\'){
+                new_path[i] = '\0';
+                break;
+            }
+        }
+        eval(file_contents, new_path);
+        if(file_contents != null) free(file_contents);
+        delete_element(value);
+    }
+    /* sleep */
+    else if(comp_substr(source, token_start, token_end, "sleep")){
+        stack_element * value1 = stack_pop();
+        if(
+            !str_is_num((*value1).value, 0, strlen((*value1).value))
+        ){
+            error("trying to sleep a non-numerical amount of time.");
+        }
+        delay(atof((*value1).value));
+        delete_element(value1);
     }
     /* Number */
     else if(str_is_num(source, token_start, token_end)){
@@ -1037,4 +1114,26 @@ stack_element * stack_pop(){
 void delete_element(stack_element * se){
     free((*se).value);
     free(se);
+}
+
+void delay(int milliseconds){
+    #if OS_TYPE == 1
+        struct timespec  req, rem;
+        if (milliseconds <= 0L)
+            return;
+        req.tv_sec = milliseconds / 1000L;
+        req.tv_nsec = (milliseconds % 1000L) * 1000000L;
+        rem.tv_sec = 0;
+        rem.tv_nsec = 0;
+        nanosleep(&req, &rem);
+    #elif OS_TYPE == 2
+        clock_t start = clock();
+        while ((clock() - start) * 1000 / CLOCKS_PER_SEC < milliseconds)
+        {
+            // Do nothing.
+        }
+    #elif OS_TYPE == 3
+        Sleep(milliseconds);
+    #endif
+    
 }

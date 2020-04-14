@@ -1,0 +1,28 @@
+( /* "floor": Floors a value */
+    /* Par 1: value (top)*/
+    1 //
+) >floor
+
+( /* "ceil": Ceils a value */
+    /* Par 1: value (top)*/
+    copy copy
+    (floor% !=)
+        (floor% 1 +)
+        (floor%)
+        if
+) >ceil
+
+( /* "abs": Gets the absolute value of a value */
+    /* Par 1: value (top)*/
+    copy
+    (0 <)
+        (-1 *)
+        ()
+        if
+) >abs
+
+( /* "root": Gets the mth root of n */
+    /* Par 1: n */
+    /* Par 2: m (top) */
+    1 swap / **
+) >root

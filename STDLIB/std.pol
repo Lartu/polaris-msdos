@@ -1,0 +1,15 @@
+/*
+    The Polaris Standard Library
+*/
+
+( /* "pliberror": Prints a Polaris Library runtime error */
+    /* Par 1: message (top)*/
+    "Polaris Standard Library Runtime Error:\n" print
+    print
+    "\n" print
+    exit
+) >pliberror
+
+"scope.pol" import
+"math.pol" import
+"random.pol" import

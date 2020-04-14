@@ -1,0 +1,11 @@
+( /* "rnd_range": Gets a random integer value in [min, max) */
+    /* Par 1: min */
+    /* Par 2: max */
+    addsc%
+    max lset%
+    min lset%
+    max lget% min lget% -
+    random * 1 //
+    min lget% +
+    delsc%
+) >rnd_range
