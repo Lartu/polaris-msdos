@@ -43,11 +43,12 @@ language that have yet to be implemented. This is a roadmap of them in no partic
 - [ ] File Reading / Writing
 - [x] Random Number Generation
 - [ ] Sub-strings
+- [ ] String length
 - [x] Documentation
 - [ ] Functions for easy reading and modifying of Polaris variables from C code.
 - [x] Including other source files
 - [ ] Sockets
-- [ ] Pauses
+- [X] Pauses
 - [x] Escape double quotes in strings
 - [X] Flip MS-DOS Switches
 - [x] Error message when no file is specified
