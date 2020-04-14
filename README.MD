@@ -41,16 +41,16 @@ The Polaris documentation can be found at www.lartu.net/projects/polaris.
 This is Polaris **1.0α** and it's still under development. There are many features that I'd like to add to the
 language that have yet to be implemented. This is a roadmap of them in no particular order:
 - [ ] File Reading / Writing
-- [ ] Random Number Generation
+- [x] Random Number Generation
 - [ ] Sub-strings
 - [x] Documentation
 - [ ] Functions for easy reading and modifying of Polaris variables from C code.
-- [ ] Including other source files
+- [x] Including other source files
 - [ ] Sockets
 - [ ] Pauses
 - [x] Escape double quotes in strings
 - [X] Flip MS-DOS Switches
-- [ ] Error message when no file is specified
+- [x] Error message when no file is specified
 
 ## Contributing to Polaris
 
