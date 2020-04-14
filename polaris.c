@@ -17,6 +17,8 @@
 #if OS_TYPE == 1
     #define _POSIX_C_SOURCE 200112L
     #include "unistd.h"
+#elif OS_TYPE == 2
+    #include "dos.h"
 #elif OS_TYPE == 3
     #include "windows.h"
 #endif
@@ -74,7 +76,7 @@ void num_to_str(char* destination, pnumber number);
 void set_var_value(char* var, char* value);
 void get_var_value(char* var);
 void polaris_setup();
-void delay(int milliseconds);
+void polaris_delay(int milliseconds);
 
 
 /* --- Main --- */
@@ -939,7 +941,7 @@ int eval_reserved_word(char* source, size_t token_start, size_t token_end, char*
         ){
             error("trying to sleep a non-numerical amount of time.");
         }
-        delay(atof((*value1).value));
+        polaris_delay(atof((*value1).value));
         delete_element(value1);
     }
     /* Number */
@@ -1116,7 +1118,7 @@ void delete_element(stack_element * se){
     free(se);
 }
 
-void delay(int milliseconds){
+void polaris_delay(int milliseconds){
     #if OS_TYPE == 1
         struct timespec  req, rem;
         if (milliseconds <= 0L)
@@ -1127,11 +1129,7 @@ void delay(int milliseconds){
         rem.tv_nsec = 0;
         nanosleep(&req, &rem);
     #elif OS_TYPE == 2
-        clock_t start = clock();
-        while ((clock() - start) * 1000 / CLOCKS_PER_SEC < milliseconds)
-        {
-            // Do nothing.
-        }
+        delay(milliseconds);
     #elif OS_TYPE == 3
         Sleep(milliseconds);
     #endif
