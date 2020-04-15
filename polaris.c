@@ -1,5 +1,5 @@
 /* --- Constants --- */
-#define OS_TYPE 1 /* 1 - Unix, 2 - MS-DOS, 3 - Windows*/
+#define OS_TYPE 3 /* 1 - Unix, 2 - MS-DOS, 3 - Windows*/
 #define VERSION "1.0"
 #if OS_TYPE == 1
     #define OS "Unix"
@@ -115,16 +115,16 @@ void check_args(int argc, char** argv){
                 show_pushpops = true;
             }
             #elif OS_TYPE == 2 || OS_TYPE == 3
-            if(strcmp(argv[i], "\\v") == 0){
+            if(strcmp(argv[i], "/v") == 0){
                 display_version();
             }
-            else if(strcmp(argv[i], "\\h") == 0){
+            else if(strcmp(argv[i], "/h") == 0){
                 display_help();
             }
-            else if(strcmp(argv[i], "\\m") == 0){
+            else if(strcmp(argv[i], "/m") == 0){
                 display_memory_information = true;
             }
-            else if(strcmp(argv[i], "\\p") == 0){
+            else if(strcmp(argv[i], "/p") == 0){
                 show_pushpops = true;
             }
             #endif
@@ -370,7 +370,7 @@ int eval_reserved_word(char* source, size_t token_start, size_t token_end, char*
     /* print */
     if(comp_substr(source, token_start, token_end, "print")){
         stack_element * value = stack_pop();
-        size_t val_len = strlen((*value).value)+1;
+        size_t val_len = strlen((*value).value);
         source = (*value).value;
         for(i = 0; i < val_len; ++i){
             if(source[i] == '\\' && i < val_len && source[i+1] == 'n'){
@@ -1099,7 +1099,7 @@ void stack_push(char* source, size_t from, size_t to, bool trim, bool pushempty)
         copy_substr((*element_to_push).value, source, from, to);
         (*element_to_push).next = stack;
         stack = element_to_push;
-        if(show_pushpops) printf("Push: %s\r\n", (*stack).value);
+        if(show_pushpops) printf("Push: \"%s\"\r\n", (*stack).value);
     }
 }
 
@@ -1108,7 +1108,7 @@ stack_element * stack_pop(){
     if(stack == null){
         error("cannot pop from an empty stack.");
     }
-    if(show_pushpops) printf("Pop: %s\r\n", (*popped).value);
+    if(show_pushpops) printf("Pop: \"%s\"\r\n", (*popped).value);
     stack = (*stack).next;
     return popped;
 }

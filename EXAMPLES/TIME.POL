@@ -1,0 +1,10 @@
+/* Counts from 0 to 9, one number per seconds */
+
+0 >n
+(@n 10 <)
+    (
+        @n "\r\n" join print
+        1000 sleep
+        @n 1 + >n
+    )
+    while
